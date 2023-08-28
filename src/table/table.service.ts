@@ -2,14 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 import { Table } from './entities/table.entity';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TableService {
-
-  tables: Table[] = [];
+  constructor(private readonly prisma: PrismaService){}
 
   findAll() {
-    return this.tables;
+    return this.prisma.table.findMany({
+      orderBy: {
+        number: 'asc'
+      }
+    });
   }
 
   findOne(id: number) {
@@ -17,11 +21,10 @@ export class TableService {
   }
 
   create(dto: CreateTableDto) {
-    const table: Table = {id: 'any', ...dto};
+    const data: Table = {...dto};
 
-    this.tables.push(table);
+    return this.prisma.table.create({ data });
 
-    return table;
   }
 
   update(id: number, updateTableDto: UpdateTableDto) {
