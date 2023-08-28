@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Tables')
 @Controller('api/tables')
 export class TableController {
   constructor(private readonly tableService: TableService) {}
