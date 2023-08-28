@@ -36,7 +36,7 @@ export class TableService {
     });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} table`;
+  async delete(id: string) {
+    await this.prisma.table.delete({ where: { id } });
   }
 }
