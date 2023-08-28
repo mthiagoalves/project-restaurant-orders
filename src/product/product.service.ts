@@ -20,7 +20,7 @@ export class ProductService {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
+  delete(id: number) {
     return `This action removes a #${id} product`;
   }
 }
