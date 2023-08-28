@@ -16,8 +16,8 @@ async function bootstrap() {
     .setDescription('Application for managing the tables of a restaurant')
     .setVersion('1.0.0')
     .addTag('Status')
-    .addTag('Tables')
     .addTag('Products')
+    .addTag('Tables')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
