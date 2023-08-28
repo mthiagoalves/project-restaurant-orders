@@ -27,8 +27,13 @@ export class TableService {
 
   }
 
-  update(id: string, dto: UpdateTableDto) {
-    return `This action updates a #${id} table`;
+  update(id: string, dto: UpdateTableDto): Promise<Table> {
+    const data: Partial<Table> = { ...dto };
+
+    return this.prisma.table.update({
+      where: { id: id },
+      data
+    });
   }
 
   remove(id: string) {

@@ -38,7 +38,7 @@ export class TableController {
   @ApiOperation({
     summary: 'Update a table for id'
   })
-  update(@Param('id') id: string, @Body() dto: UpdateTableDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateTableDto): Promise<Table> {
     return this.tableService.update(id, dto);
   }
 
