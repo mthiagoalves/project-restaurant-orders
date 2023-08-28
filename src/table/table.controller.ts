@@ -3,7 +3,7 @@ import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 
-@Controller('api/table')
+@Controller('api/tables')
 export class TableController {
   constructor(private readonly tableService: TableService) {}
 
@@ -16,10 +16,10 @@ export class TableController {
   findOne(@Param('id') id: string) {
     return this.tableService.findOne(+id);
   }
-  
+
   @Post()
-  create(@Body() createTableDto: CreateTableDto) {
-    return this.tableService.create(createTableDto);
+  create(@Body() dto: CreateTableDto) {
+    return this.tableService.create(dto);
   }
 
   @Patch(':id')

@@ -1,20 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { Table } from './entities/table.entity';
 
 @Injectable()
 export class TableService {
 
+  tables: Table[] = [];
+
   findAll() {
-    return `This action returns all table`;
+    return this.tables;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} table`;
   }
 
-  create(createTableDto: CreateTableDto) {
-    return 'This action adds a new table';
+  create(dto: CreateTableDto) {
+    const table: Table = {id: 'any', ...dto};
+
+    this.tables.push(table);
+
+    return table;
   }
 
   update(id: number, updateTableDto: UpdateTableDto) {
