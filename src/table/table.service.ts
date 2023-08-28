@@ -8,18 +8,29 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TableService {
   constructor(private readonly prisma: PrismaService) { }
 
-  findAll(): Promise<Table[]> {
-    return this.prisma.table.findMany({
-      orderBy: {
-        number: 'asc'
+  async findAll(): Promise<Table[]> {
+    try {
+      const tableCreated = await this.prisma.table.findMany({
+        orderBy: {
+          number: 'asc'
+        }
+      });
+
+      if (!tableCreated || tableCreated.length === 0) {
+        throw new NotFoundException('Nothing tables registered at the moment.');
       }
-    });
+
+      return tableCreated;
+    } catch (error) {
+      throw new UnprocessableEntityException(error);
+
+    }
   }
 
   async findById(id: string): Promise<Table> {
     const record = await this.prisma.table.findUnique({ where: { id } });
 
-    if(!record) {
+    if (!record) {
       throw new NotFoundException(`Table as ID '${id}' was not found`);
     }
 
@@ -55,7 +66,7 @@ export class TableService {
 
   handleError(error: Error): undefined {
     const errorLines = error.message?.split('\n');
-    const lastErrorLines = errorLines[errorLines.length - 1 ]?.trim();
+    const lastErrorLines = errorLines[errorLines.length - 1]?.trim();
     throw new UnprocessableEntityException(lastErrorLines || 'Everything error');
   }
 }
