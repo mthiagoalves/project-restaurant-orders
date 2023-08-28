@@ -9,7 +9,7 @@ datasource db {
 
 model Table {
   id          String  @id @default(uuid())
-  number      Int
+  number      Int     @unique
 
   createdAt   DateTime  @default(now())
   updateAt    DateTime  @updatedAt
