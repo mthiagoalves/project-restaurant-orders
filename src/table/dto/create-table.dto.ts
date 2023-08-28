@@ -10,5 +10,4 @@ export class CreateTableDto {
     example: 1
   })
   number: number;
-
 }
