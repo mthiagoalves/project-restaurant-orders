@@ -1,8 +1,9 @@
-import { Injectable, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -38,20 +39,38 @@ export class UserService {
     return this.findById(id);
   }
 
-  create(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto): Promise<User> {
+
+    if (dto.password != dto.confirm_password) {
+      throw new BadRequestException('Password dont mathces');
+    }
+
     delete dto.confirm_password;
 
-    const data: User = { ...dto };
+    const data: User = {
+      ...dto,
+      password: await bcrypt.hash(dto.password, 10)
+    };
 
     return this.prisma.user.create({ data }).catch(this.handleError);
 
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<User> {
-    delete dto.confirm_password;
     await this.findById(id);
 
+    if(dto.password) {
+      if (dto.password != dto.confirm_password) {
+        throw new BadRequestException('Password dont mathces');
+      }
+    }
+    delete dto.confirm_password;
+
     const data: Partial<User> = { ...dto };
+
+    if(data.password){
+      data.password = await bcrypt.hash(data.password, 10);
+    }
 
     return this.prisma.user.update({
       where: { id: id },
