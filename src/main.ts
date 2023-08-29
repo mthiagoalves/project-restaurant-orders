@@ -16,10 +16,12 @@ async function bootstrap() {
     .setDescription('Application for managing the tables of a restaurant')
     .setVersion('1.0.0')
     .addTag('Status')
+    .addTag('Auth')
     .addTag('Orders')
     .addTag('Products')
     .addTag('Tables')
     .addTag('Users')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
