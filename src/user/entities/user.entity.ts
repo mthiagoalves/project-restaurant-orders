@@ -3,7 +3,7 @@ export class User {
   name: string;
   username: string;
   password: string;
-  user_level: string;
+  userLevel: string;
   image: string;
   createdAt?: Date;
   updateAt?: Date;

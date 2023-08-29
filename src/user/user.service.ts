@@ -14,7 +14,7 @@ export class UserService {
     name: true,
     username: true,
     password: false,
-    user_level: false,
+    userLevel: false,
     image: true,
     createdAt: true,
     updateAt: true
@@ -57,11 +57,10 @@ export class UserService {
 
   async create(dto: CreateUserDto): Promise<User> {
 
-    if (dto.password != dto.confirm_password) {
+    if (dto.password != dto.confirmPassword) {
       throw new BadRequestException('Password dont mathces');
     }
-
-    delete dto.confirm_password;
+    delete dto.confirmPassword;
 
     const data: User = {
       ...dto,
@@ -79,11 +78,11 @@ export class UserService {
     await this.findById(id);
 
     if (dto.password) {
-      if (dto.password != dto.confirm_password) {
+      if (dto.password != dto.confirmPassword) {
         throw new BadRequestException('Password dont mathces');
       }
     }
-    delete dto.confirm_password;
+    delete dto.confirmPassword;
 
     const data: Partial<User> = { ...dto };
 

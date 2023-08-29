@@ -32,14 +32,14 @@ export class CreateUserDto {
     description: 'Just confirm password',
     example: 'Abcd@1234'
   })
-  confirm_password: string
+  confirmPassword: string
 
   @IsString()
   @ApiProperty({
     description: 'User level to login',
     example: 'admin'
   })
-  user_level: string
+  userLevel: string
 
   @IsUrl()
   @ApiProperty({
