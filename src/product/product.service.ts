@@ -3,6 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
 
 @Injectable()
 export class ProductService {
@@ -46,7 +47,7 @@ export class ProductService {
 
     data.slug = this.formatSlug(data.name);
 
-    return this.prisma.product.create({ data }).catch(this.handleError);
+    return this.prisma.product.create({ data }).catch(handleError);
 
   }
 
@@ -58,18 +59,12 @@ export class ProductService {
     return this.prisma.product.update({
       where: { id: id },
       data
-    }).catch(this.handleError);
+    }).catch(handleError);
   }
 
   async delete(id: string) {
     await this.findById(id);
     await this.prisma.product.delete({ where: { id } });
-  }
-
-  handleError(error: Error): undefined {
-    const errorLines = error.message?.split('\n');
-    const lastErrorLines = errorLines[errorLines.length - 1]?.trim();
-    throw new UnprocessableEntityException(lastErrorLines || 'Everything error');
   }
 
   private formatSlug(name: string): string {

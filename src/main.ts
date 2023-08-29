@@ -16,6 +16,7 @@ async function bootstrap() {
     .setDescription('Application for managing the tables of a restaurant')
     .setVersion('1.0.0')
     .addTag('Status')
+    .addTag('Orders')
     .addTag('Products')
     .addTag('Tables')
     .addTag('Users')

@@ -1,9 +1,10 @@
-import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { PrismaService } from 'src/prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -70,7 +71,7 @@ export class UserService {
     return this.prisma.user.create({
       data,
       select: this.fieldsUserSelected
-    }).catch(this.handleError);
+    }).catch(handleError);
 
   }
 
@@ -94,17 +95,11 @@ export class UserService {
       where: { id: id },
       select: this.fieldsUserSelected,
       data
-    }).catch(this.handleError);
+    }).catch(handleError);
   }
 
   async delete(id: string) {
     await this.findById(id);
     await this.prisma.user.delete({ where: { id } });
-  }
-
-  private handleError(error: Error): undefined {
-    const errorLines = error.message?.split('\n');
-    const lastErrorLines = errorLines[errorLines.length - 1]?.trim();
-    throw new UnprocessableEntityException(lastErrorLines || 'Everything error');
   }
 }
