@@ -29,10 +29,35 @@ export class OrderService {
           number: dto.tableNumber
         }
       },
+      products: {
+        connect: dto.products.map(productId => ({
+          id: productId
+        }))
+      },
       status: dto.status,
     };
-    
-    return this.prisma.order.create({ data }).catch(handleError);
+
+    return this.prisma.order.create({
+      data,
+      select: {
+        id: true,
+        table: {
+          select: {
+            number: true
+          }
+        },
+        user: {
+          select: {
+            name: true
+          }
+        },
+        products: {
+          select: {
+            name: true
+          }
+        }
+      }
+    }).catch(handleError);
   }
 
   update(id: string, dto: UpdateOrderDto) {
