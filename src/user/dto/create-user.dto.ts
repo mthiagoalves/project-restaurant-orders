@@ -6,14 +6,14 @@ export class CreateUserDto {
   @IsString()
   @ApiProperty({
     description: 'Name of the user',
-    example: 1
+    example: 'Thiago Alves'
   })
   name: string
 
   @IsString()
   @ApiProperty({
     description: 'Nickname of the user. Have be unique',
-    example: 1
+    example: 'thiaguinho-imbarie'
   })
   username: string
 
