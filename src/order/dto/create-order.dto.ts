@@ -30,5 +30,5 @@ export class CreateOrderDto {
     description: 'Status of the order',
     example: 'Received'
   })
-  stauts: string
+  status: string
 }
