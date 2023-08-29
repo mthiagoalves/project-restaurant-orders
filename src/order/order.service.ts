@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
-import { handleError } from 'src/utils/handle-error.util';
+import { Order } from './entities/order.entity';
 
 @Injectable()
 export class OrderService {
@@ -13,6 +14,7 @@ export class OrderService {
     return this.prisma.order.findMany({
       select: {
         id: true,
+        status: true,
         table: {
           select: {
             number: true
@@ -39,6 +41,7 @@ export class OrderService {
       where: { id },
       select: {
         id: true,
+        status: true,
         table: {
           select: {
             number: true
@@ -46,7 +49,8 @@ export class OrderService {
         },
         user: {
           select: {
-            name: true
+            name: true,
+            username: true
           }
         },
         products: {
@@ -91,19 +95,49 @@ export class OrderService {
         },
         user: {
           select: {
-            name: true
+            name: true,
+            username: true
           }
         },
         products: {
           select: {
             name: true
           }
-        }
+        },
+        status: true
       }
     }).catch(handleError);
   }
 
-  update(id: string, dto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  updateOrderStatus(id: string, dto: UpdateOrderDto) {
+    const data = { ...dto };
+
+    return this.prisma.order.update({
+      where: { id: id },
+      data,
+      select: {
+        id: true,
+        status: true,
+        table: {
+          select: {
+            number: true
+          }
+        },
+        products: {
+          select: {
+            name: true,
+            price: true,
+            image: true
+          }
+        },
+        user: {
+          select: {
+            name: true,
+            username: true
+          }
+        }
+      }
+    });
   }
+
 }

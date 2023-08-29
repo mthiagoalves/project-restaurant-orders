@@ -37,7 +37,7 @@ export class OrderController {
   @ApiOperation({
     summary: 'Update a order for id'
   })
-  update(@Param('id') id: string, @Body() dto: UpdateOrderDto) {
-    return this.orderService.update(id, dto);
+  updateOrderStatus(@Param('id') id: string, @Body() dto: UpdateOrderDto) {
+    return this.orderService.updateOrderStatus(id, dto);
   }
 }
