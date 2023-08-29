@@ -27,9 +27,15 @@ export class OrderService {
         },
         products: {
           select: {
-            name: true,
-            image: true,
-            price: true
+            quantity: true,
+            note: true,
+            product: {
+              select: {
+                name: true,
+                image: true,
+                price: true
+              }
+            }
           }
         }
       }
@@ -55,9 +61,15 @@ export class OrderService {
         },
         products: {
           select: {
-            name: true,
-            image: true,
-            price: true
+            quantity: true,
+            note: true,
+            product: {
+              select: {
+                name: true,
+                image: true,
+                price: true
+              }
+            }
           }
         }
       }
@@ -77,9 +89,13 @@ export class OrderService {
         }
       },
       products: {
-        connect: dto.products.map(productId => ({
-          id: productId
-        }))
+        createMany: {
+          data: dto.products.map((createOrderProductDto) => ({
+            productId: createOrderProductDto.productId,
+            quantity: createOrderProductDto.quantity,
+            note: createOrderProductDto.note
+          }))
+        }
       },
       status: dto.status,
     };
@@ -101,7 +117,15 @@ export class OrderService {
         },
         products: {
           select: {
-            name: true
+            quantity: true,
+            note: true,
+            product: {
+              select: {
+                name: true,
+                image: true,
+                price: true
+              }
+            }
           }
         },
         status: true
@@ -125,9 +149,13 @@ export class OrderService {
         },
         products: {
           select: {
-            name: true,
-            price: true,
-            image: true
+            product: {
+              select: {
+                name: true,
+                image: true,
+                price: true
+              }
+            }
           }
         },
         user: {
