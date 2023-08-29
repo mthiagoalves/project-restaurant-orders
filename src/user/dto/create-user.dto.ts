@@ -18,6 +18,16 @@ export class CreateUserDto {
   username: string
 
   @IsString()
+  @Matches(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/, {
+    message: 'Invalid email format'
+  })
+  @ApiProperty({
+    description: 'Email of the user. Have be unique',
+    example: 'thiaguinho.imabarie@outlook.com'
+  })
+  email: string
+
+  @IsString()
   @MinLength(6)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Password is weak'

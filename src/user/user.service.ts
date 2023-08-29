@@ -14,6 +14,7 @@ export class UserService {
     id: true,
     name: true,
     username: true,
+    email: true,
     password: false,
     userLevel: false,
     image: true,
