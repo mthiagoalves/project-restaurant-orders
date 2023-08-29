@@ -9,9 +9,22 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(private readonly prisma: PrismaService) { }
 
+  private fieldsUserSelected = {
+    id: true,
+    name: true,
+    username: true,
+    password: false,
+    user_level: false,
+    image: true,
+    createdAt: true,
+    updateAt: true
+  };
+
   async findAll(): Promise<User[]> {
     try {
-      const userCreated = await this.prisma.user.findMany();
+      const userCreated = await this.prisma.user.findMany({
+        select: this.fieldsUserSelected
+      });
 
       if (!userCreated || userCreated.length === 0) {
         throw new NotFoundException('Nothing user registered at the moment.');
@@ -26,7 +39,10 @@ export class UserService {
   }
 
   async findById(id: string): Promise<User> {
-    const record = await this.prisma.user.findUnique({ where: { id } });
+    const record = await this.prisma.user.findUnique({
+      where: { id },
+      select: this.fieldsUserSelected
+    });
 
     if (!record) {
       throw new NotFoundException(`User as ID '${id}' was not found`);
@@ -52,14 +68,17 @@ export class UserService {
       password: await bcrypt.hash(dto.password, 10)
     };
 
-    return this.prisma.user.create({ data }).catch(this.handleError);
+    return this.prisma.user.create({
+      data,
+      select: this.fieldsUserSelected
+    }).catch(this.handleError);
 
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<User> {
     await this.findById(id);
 
-    if(dto.password) {
+    if (dto.password) {
       if (dto.password != dto.confirm_password) {
         throw new BadRequestException('Password dont mathces');
       }
@@ -68,12 +87,13 @@ export class UserService {
 
     const data: Partial<User> = { ...dto };
 
-    if(data.password){
+    if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
 
     return this.prisma.user.update({
       where: { id: id },
+      select: this.fieldsUserSelected,
       data
     }).catch(this.handleError);
   }
