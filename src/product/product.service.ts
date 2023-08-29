@@ -17,7 +17,7 @@ export class ProductService {
       });
 
       if (!productCreated || productCreated.length === 0) {
-        throw new NotFoundException('Nothing tables registered at the moment.');
+        throw new NotFoundException('Nothing product registered at the moment.');
       }
 
       return productCreated;
@@ -44,6 +44,8 @@ export class ProductService {
   create(dto: CreateProductDto): Promise<Product> {
     const data: Product = { ...dto };
 
+    data.slug = this.formatSlug(data.name);
+
     return this.prisma.product.create({ data }).catch(this.handleError);
 
   }
@@ -68,5 +70,9 @@ export class ProductService {
     const errorLines = error.message?.split('\n');
     const lastErrorLines = errorLines[errorLines.length - 1]?.trim();
     throw new UnprocessableEntityException(lastErrorLines || 'Everything error');
+  }
+
+  private formatSlug(name: string): string {
+    return name.replace(/\s+/g, '-').toLowerCase();
   }
 }

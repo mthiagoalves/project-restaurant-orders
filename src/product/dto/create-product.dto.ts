@@ -13,7 +13,7 @@ export class CreateProductDto {
   @IsString()
   @ApiProperty({
     description: 'Slug of the product generate automatic as name',
-    example: 'Vegan Harumaki'
+    example: 'vegan-harumaki'
   })
   slug: string;
 
@@ -30,7 +30,7 @@ export class CreateProductDto {
   @IsPositive()
   @ApiProperty({
     description: 'Price of the product',
-    example: 5.00
+    example: 5.99
   })
   price: number;
 
