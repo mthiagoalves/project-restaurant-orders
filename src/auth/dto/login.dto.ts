@@ -9,7 +9,7 @@ export class LoginDto{
     description: 'Nick of the user',
     example: 'thiaguinho-imbarie'
   })
-  nickname: string;
+  username: string;
 
   @IsString()
   @IsEmail({}, {message: 'Invalid email format'})
@@ -24,7 +24,7 @@ export class LoginDto{
   @IsNotEmpty()
   @ApiProperty({
     description: 'Password of the user',
-    example: 'Abdc@1234'
+    example: 'Abcd@1234'
   })
   password: string;
 }
