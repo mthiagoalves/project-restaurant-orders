@@ -1,13 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+
 
 @ApiTags('Orders')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 @Controller('api/orders')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
   @Get()
   @ApiOperation({
@@ -41,3 +45,7 @@ export class OrderController {
     return this.orderService.updateOrderStatus(id, dto);
   }
 }
+function AuthGuards(): Function | import("@nestjs/common").CanActivate {
+  throw new Error('Function not implemented.');
+}
+
