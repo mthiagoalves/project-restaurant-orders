@@ -5,13 +5,6 @@ import { Type } from "class-transformer";
 
 export class CreateOrderDto {
 
-  @IsUUID()
-  @ApiProperty({
-    description: 'User Id to creating order',
-    example: 'daeadaf9-451e-4f41-90ea-86c68f9b916a'
-  })
-  userId: string;
-
   @IsInt()
   @IsPositive()
   @ApiProperty({

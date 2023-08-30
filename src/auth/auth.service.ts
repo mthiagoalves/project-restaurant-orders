@@ -32,7 +32,6 @@ export class AuthService {
     }
 
     delete user.password;
-    delete user.userLevel;
 
     return {
       token: this.jwtService.sign({ username }),

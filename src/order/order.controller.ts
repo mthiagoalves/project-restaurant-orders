@@ -4,6 +4,8 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { LoggedUser } from 'src/auth/logged-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 
 @ApiTags('Orders')
@@ -33,8 +35,8 @@ export class OrderController {
   @ApiOperation({
     summary: 'Create a new order'
   })
-  create(@Body() dto: CreateOrderDto) {
-    return this.orderService.create(dto);
+  create(@LoggedUser() user: User, @Body() dto: CreateOrderDto) {
+    return this.orderService.create(user.id, dto);
   }
 
   @Patch(':id')
