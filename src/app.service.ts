@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getAppStatus(): string {
-    return 'Project running 🐱‍🏍🚀: \n Please check http://localhost:3454/api for Swagger docs...';
+  getAppStatus(baseUrl: string) {
+    return {
+      status: 'Project running 🐱‍🏍🚀: \n  http://localhost:3454/api for Swagger docs...',
+      docs: baseUrl + '/api'
+    }
   }
 }
